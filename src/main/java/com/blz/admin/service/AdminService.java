@@ -24,8 +24,6 @@ public class AdminService implements IAdminService{
 	@Autowired
 	MailService mailService;
 
-	@Autowired
-	RestTemplate restTemplate;
 	//	
 	//	@Autowired
 	//	Email email;
@@ -50,11 +48,9 @@ public class AdminService implements IAdminService{
 
 	@Override
 	public AdminModel updateAdmin(AdminDTO adminDTO, Long id,String token) {
-		//		Long admId = tokenUtil.decodeToken(token);
-		//		Optional<AdminModel> isTokenPresent = adminRepository.findById(admId);
-		//		if(isTokenPresent.isPresent()) {
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8092/admin/validateuser/" + token, Boolean.class);
-		if (isUserPresent) {
+				Long admId = tokenUtil.decodeToken(token);
+				Optional<AdminModel> isTokenPresent = adminRepository.findById(admId);
+				if(isTokenPresent.isPresent()) {
 			Optional<AdminModel> isAdminPresent= adminRepository.findById(id);
 			if(isAdminPresent.isPresent()) {
 				isAdminPresent.get().setFirstName(adminDTO.getFirstName());
@@ -76,11 +72,9 @@ public class AdminService implements IAdminService{
 
 	@Override
 	public List<AdminModel> getAllAdmins(String token) {
-		//		Long admId = tokenUtil.decodeToken(token);
-		//		Optional<AdminModel> isTokenPresent = adminRepository.findById(admId);
-		//		if(isTokenPresent.isPresent()) {
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8092/admin/validateuser/" + token, Boolean.class);
-		if (isUserPresent) {
+				Long admId = tokenUtil.decodeToken(token);
+				Optional<AdminModel> isTokenPresent = adminRepository.findById(admId);
+				if(isTokenPresent.isPresent()) {
 			List<AdminModel>getAllAdmins = adminRepository.findAll();
 			if(getAllAdmins.size() > 0) {
 				return getAllAdmins;
@@ -93,11 +87,9 @@ public class AdminService implements IAdminService{
 
 	@Override
 	public Optional<AdminModel> getAdminById(Long id,String token) {
-		//		Long admId = tokenUtil.decodeToken(token);
-		//		Optional<AdminModel> isTokenPresent = adminRepository.findById(admId);
-		//		if(isTokenPresent.isPresent()) {
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8092/admin/validateuser/" + token, Boolean.class);
-		if (isUserPresent) {
+				Long admId = tokenUtil.decodeToken(token);
+				Optional<AdminModel> isTokenPresent = adminRepository.findById(admId);
+				if(isTokenPresent.isPresent()) {
 			return adminRepository.findById(id);
 		}
 		throw new CustomNotFoundException(400,"Token Invalid");
@@ -105,11 +97,10 @@ public class AdminService implements IAdminService{
 
 	@Override
 	public AdminModel deleteAdmin(Long id,String token) {
-		//		Long admId = tokenUtil.decodeToken(token);
-		//		Optional<AdminModel> isTokenPresent = adminRepository.findById(admId);
-		//		if(isTokenPresent.isPresent()) {
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8092/admin/validateuser/" + token, Boolean.class);
-		if (isUserPresent) {
+				Long admId = tokenUtil.decodeToken(token);
+				Optional<AdminModel> isTokenPresent = adminRepository.findById(admId);
+				if(isTokenPresent.isPresent()) {
+		
 			Optional<AdminModel> isAdminPresent = adminRepository.findById(id);
 			if(isAdminPresent.isPresent()) {
 				adminRepository.delete(isAdminPresent.get());
@@ -166,9 +157,9 @@ public class AdminService implements IAdminService{
 
 	@Override
 	public AdminModel addProfilePath(Long id, String profilePath,String token) {
-		//		Long decode = tokenUtil.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8092/admin/validateuser/" + token, Boolean.class);
-		if (isUserPresent) {
+				Long decode = tokenUtil.decodeToken(token);
+				Optional<AdminModel> isTokenPresent = adminRepository.findById(decode);
+				if (isTokenPresent.isPresent()) {
 			Optional<AdminModel>isAdminPresent = adminRepository.findById(id);
 			if (isAdminPresent.isPresent()) {
 				isAdminPresent.get().setProfilePath(profilePath);
